@@ -1,0 +1,26 @@
+version: '3'
+services:
+  flask1:
+    build: ./flask
+    networks:
+      - internal_network
+
+  flask2:
+    build: ./flask
+    networks:
+      - internal_network
+
+  load_balancer:
+    image: nginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./certs:/etc/nginx/certs
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - internal_network
+
+networks:
+  internal_network:
+    driver: bridge
